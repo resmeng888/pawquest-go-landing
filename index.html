@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -12,17 +12,20 @@
         }
 
         :root {
-            --bg-primary: #F5F5F7;
+            --bg-primary: #FAFAFA;
             --bg-secondary: #FFFFFF;
-            --accent: #007AFF;
-            --accent-hover: #0056D3;
-            --text-primary: #1D1D1F;
-            --text-secondary: #6E6E73;
-            --text-tertiary: #86868B;
-            --border: #D2D2D7;
-            --shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
-            --radius: 18px;
-            --radius-sm: 12px;
+            --bg-tertiary: #F5F5F7;
+            --accent: #5B8DEF;
+            --accent-soft: rgba(91, 141, 239, 0.08);
+            --text-primary: #1A1A1A;
+            --text-secondary: #666666;
+            --text-tertiary: #999999;
+            --border: #E8E8ED;
+            --shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
+            --shadow-hover: 0 4px 24px rgba(0, 0, 0, 0.06);
+            --radius: 24px;
+            --radius-sm: 16px;
+            --radius-xs: 12px;
         }
 
         html {
@@ -30,145 +33,188 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', 'Microsoft YaHei', sans-serif;
             background-color: var(--bg-primary);
             color: var(--text-primary);
-            line-height: 1.5;
+            line-height: 1.6;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
         .container {
             max-width: 430px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 20px;
         }
 
-        /* Hero */
+        /* Hero Section */
         .hero {
-            padding: 80px 0 48px;
+            padding: 64px 0 40px;
             text-align: center;
         }
 
         .brand {
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--accent);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            margin-bottom: 16px;
-        }
-
-        .headline {
-            font-size: 36px;
+            font-size: 32px;
             font-weight: 700;
-            line-height: 1.15;
             letter-spacing: -0.5px;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #5B8DEF 0%, #7BA3F0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .subheadline {
-            font-size: 17px;
+        .tagline {
+            font-size: 15px;
             font-weight: 400;
             color: var(--text-secondary);
-            line-height: 1.5;
-            max-width: 320px;
-            margin: 0 auto;
+            line-height: 1.6;
         }
 
-        /* Product Showcase */
+        /* AI Pet Showcase */
         .showcase {
-            padding: 32px 0 48px;
+            padding: 20px 0 48px;
             text-align: center;
         }
 
-        .product-image {
-            width: 100%;
-            max-width: 320px;
-            aspect-ratio: 1;
-            background: linear-gradient(145deg, #E8E8ED 0%, #F5F5F7 100%);
-            border-radius: var(--radius);
+        .showcase-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        .pet-container {
+            position: relative;
+            width: 280px;
+            height: 280px;
             margin: 0 auto;
+        }
+
+        .pet-glow {
+            position: absolute;
+            width: 240px;
+            height: 240px;
+            background: radial-gradient(circle, rgba(91, 141, 239, 0.15) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+        }
+
+        .pet-image {
+            width: 100%;
+            height: 100%;
+            background: var(--bg-secondary);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
+            box-shadow: var(--shadow);
         }
 
-        .product-image::before {
+        .pet-image::before {
             content: '';
             position: absolute;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            inset: 0;
+            background: linear-gradient(180deg, rgba(255,255,255,0) 60%, rgba(245,245,247,0.5) 100%);
         }
 
         .pet-avatar {
-            font-size: 120px;
+            font-size: 140px;
+            filter: grayscale(15%) contrast(1.05);
             z-index: 1;
-            filter: grayscale(20%);
         }
 
-        .product-label {
-            margin-top: 20px;
-            font-size: 15px;
+        .pet-status {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 13px;
             font-weight: 500;
-            color: var(--text-secondary);
+            color: var(--accent);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pet-status::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #34C759;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .upload-hint {
+            margin-top: 24px;
+            font-size: 14px;
+            color: var(--text-tertiary);
         }
 
         /* Features */
         .features {
-            padding: 24px 0 48px;
+            padding: 16px 0 40px;
         }
 
-        .feature-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .feature-item {
+        .feature-card {
             background: var(--bg-secondary);
             border-radius: var(--radius-sm);
-            padding: 24px;
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            padding: 28px 24px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .feature-item:active {
-            transform: scale(0.98);
+        .feature-card:active {
+            transform: scale(0.99);
+        }
+
+        .feature-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
         }
 
         .feature-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--bg-primary);
-            border-radius: 10px;
+            width: 44px;
+            height: 44px;
+            background: var(--accent-soft);
+            border-radius: var(--radius-xs);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 20px;
-            flex-shrink: 0;
         }
 
-        .feature-content h3 {
-            font-size: 16px;
+        .feature-title {
+            font-size: 17px;
             font-weight: 600;
             color: var(--text-primary);
-            margin-bottom: 4px;
         }
 
-        .feature-content p {
+        .feature-desc {
             font-size: 14px;
             font-weight: 400;
             color: var(--text-secondary);
-            line-height: 1.5;
+            line-height: 1.7;
+            padding-left: 60px;
         }
 
         /* CTA Section */
@@ -176,24 +222,25 @@
             padding: 24px 0 32px;
         }
 
-        .cta-box {
+        .cta-card {
             background: var(--bg-secondary);
             border-radius: var(--radius);
-            padding: 32px 24px;
+            padding: 36px 28px;
             text-align: center;
+            box-shadow: var(--shadow);
         }
 
         .cta-title {
-            font-size: 21px;
+            font-size: 20px;
             font-weight: 600;
             margin-bottom: 8px;
         }
 
         .cta-subtitle {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 400;
             color: var(--text-secondary);
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
 
         .form-group {
@@ -205,14 +252,13 @@
         .email-input {
             width: 100%;
             padding: 16px 20px;
-            background: var(--bg-primary);
+            background: var(--bg-tertiary);
             border: 1px solid transparent;
-            border-radius: var(--radius-sm);
-            font-size: 16px;
-            font-weight: 400;
+            border-radius: var(--radius-xs);
+            font-size: 15px;
             color: var(--text-primary);
             outline: none;
-            transition: border-color 0.2s ease, background 0.2s ease;
+            transition: all 0.25s ease;
         }
 
         .email-input:focus {
@@ -230,15 +276,16 @@
             background: var(--accent);
             color: #FFFFFF;
             border: none;
-            border-radius: var(--radius-sm);
-            font-size: 16px;
+            border-radius: var(--radius-xs);
+            font-size: 15px;
             font-weight: 500;
             cursor: pointer;
-            transition: background 0.2s ease, transform 0.15s ease;
+            transition: all 0.25s ease;
         }
 
         .submit-btn:hover {
-            background: var(--accent-hover);
+            background: #4A7BD4;
+            transform: translateY(-1px);
         }
 
         .submit-btn:active {
@@ -248,81 +295,88 @@
         /* Success State */
         .success-state {
             display: none;
-            padding: 24px;
-            text-align: center;
+            padding: 20px 0;
         }
 
         .success-state.show {
             display: block;
-            animation: fadeIn 0.3s ease;
+            animation: fadeIn 0.4s ease;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .success-icon {
             width: 56px;
             height: 56px;
-            background: #34C759;
+            background: linear-gradient(135deg, #34C759 0%, #30D158 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 28px;
+            color: white;
             margin: 0 auto 16px;
+            box-shadow: 0 4px 16px rgba(52, 199, 89, 0.3);
         }
 
         .success-text {
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 500;
             color: var(--text-primary);
         }
 
+        .success-subtext {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+
         /* Disclaimer */
         .disclaimer {
-            padding: 0 0 24px;
+            padding: 8px 0 24px;
             text-align: center;
+        }
+
+        .disclaimer-box {
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-xs);
+            padding: 16px 20px;
         }
 
         .disclaimer-text {
             font-size: 12px;
             font-weight: 400;
             color: var(--text-tertiary);
-            line-height: 1.6;
-            max-width: 280px;
-            margin: 0 auto;
+            line-height: 1.7;
         }
 
         /* Footer */
         .footer {
-            padding: 24px 0 48px;
+            padding: 16px 0 48px;
             text-align: center;
         }
 
-        .footer-badge {
+        .footer-status {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             font-size: 13px;
             font-weight: 500;
             color: var(--text-secondary);
+            background: var(--bg-tertiary);
+            padding: 10px 18px;
+            border-radius: 20px;
         }
 
-        .footer-badge::before {
+        .footer-status::before {
             content: '';
             width: 6px;
             height: 6px;
-            background: #34C759;
+            background: #FF9500;
             border-radius: 50%;
-        }
-
-        .footer-text {
-            margin-top: 8px;
-            font-size: 12px;
-            font-weight: 400;
-            color: var(--text-tertiary);
         }
     </style>
 </head>
@@ -330,85 +384,98 @@
     <div class="container">
         <!-- Hero -->
         <section class="hero">
-            <div class="brand">PawQuest Go</div>
-            <h1 class="headline">Your Pet's<br>AI Companion</h1>
-            <p class="subheadline">The world's first AI-powered pet tracker that turns every walk into an adventure</p>
+            <h1 class="brand">PawQuest Go</h1>
+            <p class="tagline">你的真实爱宠，专属AI智能陪伴<br>+ 全球实时定位冒险</p>
         </section>
 
-        <!-- Product Showcase -->
+        <!-- AI Pet Showcase -->
         <section class="showcase">
-            <div class="product-image">
-                <div class="pet-avatar">🐕</div>
+            <div class="showcase-label">AI智能形象</div>
+            <div class="pet-container">
+                <div class="pet-glow"></div>
+                <div class="pet-image">
+                    <div class="pet-avatar">🐕</div>
+                    <div class="pet-status">AI Buddy 在线</div>
+                </div>
             </div>
-            <div class="product-label">AI Buddy Preview</div>
+            <p class="upload-hint">上传真实宠物照片，生成1:1专属AI爱宠形象</p>
         </section>
 
         <!-- Features -->
         <section class="features">
-            <div class="feature-list">
-                <div class="feature-item">
+            <div class="feature-card">
+                <div class="feature-header">
                     <div class="feature-icon">◐</div>
-                    <div class="feature-content">
-                        <h3>Real Pet AI Avatar</h3>
-                        <p>Upload your pet's photo. AI creates a living digital twin.</p>
-                    </div>
+                    <h3 class="feature-title">专属AI复刻</h3>
                 </div>
+                <p class="feature-desc">保留宠物原生样貌神态</p>
+            </div>
 
-                <div class="feature-item">
+            <div class="feature-card">
+                <div class="feature-header">
                     <div class="feature-icon">◎</div>
-                    <div class="feature-content">
-                        <h3>Real-Time GPS Tracking</h3>
-                        <p>Always know where your pet is. Smart geofence alerts.</p>
-                    </div>
+                    <h3 class="feature-title">高精度GPS定位</h3>
                 </div>
+                <p class="feature-desc">全天候守护宠物安全</p>
+            </div>
 
-                <div class="feature-item">
+            <div class="feature-card">
+                <div class="feature-header">
                     <div class="feature-icon">▣</div>
-                    <div class="feature-content">
-                        <h3>Walk & Adventure Game</h3>
-                        <p>Turn daily walks into quests. Collect rewards together.</p>
-                    </div>
+                    <h3 class="feature-title">现实每一步</h3>
                 </div>
+                <p class="feature-desc">都化作专属成长冒险</p>
             </div>
         </section>
 
         <!-- CTA -->
         <section class="cta">
-            <div class="cta-box">
+            <div class="cta-card">
                 <div id="formContainer">
-                    <h2 class="cta-title">Be the First to Know</h2>
-                    <p class="cta-subtitle">Join our early access list for exclusive launch benefits</p>
+                    <h2 class="cta-title">预约早鸟体验</h2>
+                    <p class="cta-subtitle">产品上线第一时间通知你</p>
                     
                     <form class="form-group" id="emailForm" onsubmit="handleSubmit(event)">
-                        <input type="email" class="email-input" placeholder="Enter your email" required>
-                        <button type="submit" class="submit-btn">Get Early Access</button>
+                        <input type="email" class="email-input" placeholder="请输入您的邮箱" required>
+                        <button type="submit" class="submit-btn">立即预约</button>
                     </form>
                 </div>
 
                 <div class="success-state" id="successState">
                     <div class="success-icon">✓</div>
-                    <p class="success-text">感谢预约！产品上线第一时间通知你</p>
+                    <p class="success-text">预约成功</p>
+                    <p class="success-subtext">感谢预约！产品上线第一时间通知你</p>
                 </div>
             </div>
         </section>
 
         <!-- Disclaimer -->
         <section class="disclaimer">
-            <p class="disclaimer-text">本产品目前处于开发阶段，预约仅锁定早鸟权益，暂不售卖、暂不发货</p>
+            <div class="disclaimer-box">
+                <p class="disclaimer-text">产品正在开发中，预约仅锁定早鸟优先体验资格<br>暂不付款、暂不发货</p>
+            </div>
         </section>
 
         <!-- Footer -->
         <footer class="footer">
-            <div class="footer-badge">Launching Soon</div>
-            <p class="footer-text">Secure your early bird spot today</p>
+            <div class="footer-status">即将上线</div>
         </footer>
     </div>
 
     <script>
         function handleSubmit(event) {
             event.preventDefault();
-            document.getElementById('formContainer').style.display = 'none';
-            document.getElementById('successState').classList.add('show');
+            const formContainer = document.getElementById('formContainer');
+            const successState = document.getElementById('successState');
+            
+            formContainer.style.opacity = '0';
+            formContainer.style.transform = 'translateY(-8px)';
+            formContainer.style.transition = 'all 0.3s ease';
+            
+            setTimeout(() => {
+                formContainer.style.display = 'none';
+                successState.classList.add('show');
+            }, 300);
         }
     </script>
 </body>
