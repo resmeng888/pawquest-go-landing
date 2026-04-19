@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PawQuest Go - The Future of Pet Companionship</title>
+    <title>PawQuest Go</title>
     <style>
         * {
             margin: 0;
@@ -12,187 +12,191 @@
         }
 
         :root {
-            --primary-orange: #F4A261;
-            --primary-orange-light: #FFF8F3;
-            --primary-orange-dark: #E8954F;
-            --bg-white: #FFFCFA;
-            --card-bg: #FFFFFF;
-            --text-primary: #2D2D2D;
-            --text-secondary: #6B6B6B;
-            --text-muted: #9B9B9B;
-            --shadow-soft: 0 2px 12px rgba(244, 162, 97, 0.08);
-            --shadow-medium: 0 4px 20px rgba(244, 162, 97, 0.12);
-            --radius-large: 20px;
-            --radius-medium: 16px;
+            --bg-primary: #F5F5F7;
+            --bg-secondary: #FFFFFF;
+            --accent: #007AFF;
+            --accent-hover: #0056D3;
+            --text-primary: #1D1D1F;
+            --text-secondary: #6E6E73;
+            --text-tertiary: #86868B;
+            --border: #D2D2D7;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+            --radius: 18px;
+            --radius-sm: 12px;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: var(--bg-white);
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-primary);
             color: var(--text-primary);
-            min-height: 100vh;
-            overflow-x: hidden;
+            line-height: 1.5;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .container {
             max-width: 430px;
             margin: 0 auto;
-            min-height: 100vh;
             padding: 0 24px;
         }
 
-        /* Hero Section */
+        /* Hero */
         .hero {
-            padding-top: 60px;
+            padding: 80px 0 48px;
             text-align: center;
-            margin-bottom: 48px;
         }
 
-        .logo {
-            width: 64px;
-            height: 64px;
-            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--primary-orange-dark) 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            margin: 0 auto 24px;
-            box-shadow: 0 8px 24px rgba(255, 140, 66, 0.3);
+        .brand {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
         }
 
         .headline {
-            font-size: 32px;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 16px;
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 1.15;
             letter-spacing: -0.5px;
-        }
-
-        .headline span {
-            color: var(--primary-orange);
+            margin-bottom: 16px;
         }
 
         .subheadline {
-            font-size: 16px;
+            font-size: 17px;
+            font-weight: 400;
             color: var(--text-secondary);
-            line-height: 1.6;
+            line-height: 1.5;
             max-width: 320px;
             margin: 0 auto;
         }
 
-        /* Product Preview */
-        .preview {
-            margin-bottom: 48px;
+        /* Product Showcase */
+        .showcase {
+            padding: 32px 0 48px;
+            text-align: center;
         }
 
-        .phone-mockup {
-            background: var(--card-bg);
-            border-radius: var(--radius-large);
-            padding: 20px 20px 0;
-            box-shadow: var(--shadow-medium);
-            max-width: 280px;
+        .product-image {
+            width: 100%;
+            max-width: 320px;
+            aspect-ratio: 1;
+            background: linear-gradient(145deg, #E8E8ED 0%, #F5F5F7 100%);
+            border-radius: var(--radius);
             margin: 0 auto;
-        }
-
-        .phone-screen {
-            background: linear-gradient(180deg, var(--primary-orange-light) 0%, var(--bg-white) 100%);
-            border-radius: var(--radius-medium);
-            aspect-ratio: 9/16;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
         }
 
-        .phone-pet {
-            width: 120px;
-            height: 120px;
-            background: linear-gradient(135deg, #FFE4D6 0%, #FFD4C0 50%, #FFC4AA 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 60px;
-            box-shadow: 0 8px 32px rgba(255, 140, 66, 0.25);
-            margin-bottom: 16px;
+        .product-image::before {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
-        .phone-badge {
-            background: var(--primary-orange);
-            color: white;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
+        .pet-avatar {
+            font-size: 120px;
+            z-index: 1;
+            filter: grayscale(20%);
+        }
+
+        .product-label {
+            margin-top: 20px;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-secondary);
         }
 
         /* Features */
         .features {
-            margin-bottom: 48px;
+            padding: 24px 0 48px;
         }
 
-        .feature-card {
-            background: var(--card-bg);
-            border-radius: var(--radius-large);
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .feature-item {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-sm);
             padding: 24px;
-            margin-bottom: 16px;
-            box-shadow: var(--shadow-soft);
             display: flex;
             align-items: flex-start;
             gap: 16px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .feature-item:active {
+            transform: scale(0.98);
         }
 
         .feature-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--primary-orange-light);
-            border-radius: 14px;
+            width: 40px;
+            height: 40px;
+            background: var(--bg-primary);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 20px;
             flex-shrink: 0;
         }
 
         .feature-content h3 {
             font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
         }
 
         .feature-content p {
             font-size: 14px;
+            font-weight: 400;
             color: var(--text-secondary);
             line-height: 1.5;
         }
 
         /* CTA Section */
         .cta {
-            background: var(--card-bg);
-            border-radius: var(--radius-large);
+            padding: 24px 0 32px;
+        }
+
+        .cta-box {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
             padding: 32px 24px;
-            margin-bottom: 32px;
-            box-shadow: var(--shadow-soft);
             text-align: center;
         }
 
         .cta-title {
-            font-size: 20px;
-            font-weight: 700;
+            font-size: 21px;
+            font-weight: 600;
             margin-bottom: 8px;
         }
 
         .cta-subtitle {
-            font-size: 14px;
+            font-size: 15px;
+            font-weight: 400;
             color: var(--text-secondary);
             margin-bottom: 24px;
         }
 
-        .email-form {
+        .form-group {
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -201,88 +205,124 @@
         .email-input {
             width: 100%;
             padding: 16px 20px;
-            border: 2px solid #E8E8E8;
-            border-radius: 28px;
-            font-size: 15px;
+            background: var(--bg-primary);
+            border: 1px solid transparent;
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text-primary);
             outline: none;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s ease, background 0.2s ease;
         }
 
         .email-input:focus {
-            border-color: var(--primary-orange);
+            background: var(--bg-secondary);
+            border-color: var(--accent);
         }
 
         .email-input::placeholder {
-            color: var(--text-muted);
+            color: var(--text-tertiary);
         }
 
         .submit-btn {
             width: 100%;
             padding: 16px 24px;
-            background: var(--primary-orange);
-            color: white;
+            background: var(--accent);
+            color: #FFFFFF;
             border: none;
-            border-radius: 28px;
+            border-radius: var(--radius-sm);
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 16px rgba(255, 140, 66, 0.35);
+            transition: background 0.2s ease, transform 0.15s ease;
         }
 
         .submit-btn:hover {
-            background: var(--primary-orange-dark);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(255, 140, 66, 0.45);
+            background: var(--accent-hover);
         }
 
         .submit-btn:active {
             transform: scale(0.98);
         }
 
+        /* Success State */
+        .success-state {
+            display: none;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .success-state.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .success-icon {
+            width: 56px;
+            height: 56px;
+            background: #34C759;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 16px;
+        }
+
+        .success-text {
+            font-size: 17px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        /* Disclaimer */
+        .disclaimer {
+            padding: 0 0 24px;
+            text-align: center;
+        }
+
+        .disclaimer-text {
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--text-tertiary);
+            line-height: 1.6;
+            max-width: 280px;
+            margin: 0 auto;
+        }
+
         /* Footer */
         .footer {
+            padding: 24px 0 48px;
             text-align: center;
-            padding-bottom: 40px;
         }
 
         .footer-badge {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            background: var(--primary-orange-light);
-            color: var(--primary-orange);
-            padding: 10px 20px;
-            border-radius: 24px;
+            gap: 6px;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .footer-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #34C759;
+            border-radius: 50%;
         }
 
         .footer-text {
+            margin-top: 8px;
             font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 16px;
-        }
-
-        /* Success State */
-        .success-message {
-            display: none;
-            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
-            color: #2E7D32;
-            padding: 16px 24px;
-            border-radius: 28px;
-            font-size: 15px;
-            font-weight: 600;
-        }
-
-        .success-message.show {
-            display: block;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            font-weight: 400;
+            color: var(--text-tertiary);
         }
     </style>
 </head>
@@ -290,76 +330,76 @@
     <div class="container">
         <!-- Hero -->
         <section class="hero">
-            <div class="logo">🐾</div>
-            <h1 class="headline">Your Pet's<br><span>AI Companion</span></h1>
+            <div class="brand">PawQuest Go</div>
+            <h1 class="headline">Your Pet's<br>AI Companion</h1>
             <p class="subheadline">The world's first AI-powered pet tracker that turns every walk into an adventure</p>
         </section>
 
-        <!-- Product Preview -->
-        <section class="preview">
-            <div class="phone-mockup">
-                <div class="phone-screen">
-                    <div class="phone-pet">🐕</div>
-                    <div class="phone-badge">AI Buddy Active</div>
-                </div>
+        <!-- Product Showcase -->
+        <section class="showcase">
+            <div class="product-image">
+                <div class="pet-avatar">🐕</div>
             </div>
+            <div class="product-label">AI Buddy Preview</div>
         </section>
 
         <!-- Features -->
         <section class="features">
-            <div class="feature-card">
-                <div class="feature-icon">🎨</div>
-                <div class="feature-content">
-                    <h3>Real Pet AI Avatar</h3>
-                    <p>Upload your pet's photo and watch AI create a living digital twin that grows and evolves with you</p>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon">◐</div>
+                    <div class="feature-content">
+                        <h3>Real Pet AI Avatar</h3>
+                        <p>Upload your pet's photo. AI creates a living digital twin.</p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="feature-card">
-                <div class="feature-icon">📍</div>
-                <div class="feature-content">
-                    <h3>Real-Time GPS Tracking</h3>
-                    <p>Always know where your pet is with precise location tracking and smart geofence alerts</p>
+                <div class="feature-item">
+                    <div class="feature-icon">◎</div>
+                    <div class="feature-content">
+                        <h3>Real-Time GPS Tracking</h3>
+                        <p>Always know where your pet is. Smart geofence alerts.</p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="feature-card">
-                <div class="feature-icon">🎮</div>
-                <div class="feature-content">
-                    <h3>Walk & Adventure Game</h3>
-                    <p>Turn daily walks into exciting quests. Collect rewards, complete challenges, and level up together</p>
+                <div class="feature-item">
+                    <div class="feature-icon">▣</div>
+                    <div class="feature-content">
+                        <h3>Walk & Adventure Game</h3>
+                        <p>Turn daily walks into quests. Collect rewards together.</p>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- CTA -->
         <section class="cta">
-            <h2 class="cta-title">Be the First to Know</h2>
-            <p class="cta-subtitle">Join our early access list for exclusive launch benefits</p>
-            
-            <form class="email-form" id="emailForm" onsubmit="handleSubmit(event)">
-                <input type="email" class="email-input" placeholder="Enter your email" required>
-                <button type="submit" class="submit-btn">Get Early Access</button>
-            </form>
-            
-            <div class="success-message" id="successMessage">
-                ✓ 感谢预约！产品上线第一时间通知你
+            <div class="cta-box">
+                <div id="formContainer">
+                    <h2 class="cta-title">Be the First to Know</h2>
+                    <p class="cta-subtitle">Join our early access list for exclusive launch benefits</p>
+                    
+                    <form class="form-group" id="emailForm" onsubmit="handleSubmit(event)">
+                        <input type="email" class="email-input" placeholder="Enter your email" required>
+                        <button type="submit" class="submit-btn">Get Early Access</button>
+                    </form>
+                </div>
+
+                <div class="success-state" id="successState">
+                    <div class="success-icon">✓</div>
+                    <p class="success-text">感谢预约！产品上线第一时间通知你</p>
+                </div>
             </div>
         </section>
 
         <!-- Disclaimer -->
-        <div style="background: #FFF8F3; border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; text-align: center;">
-            <p style="font-size: 12px; color: #8B6F5C; line-height: 1.6;">
-                本产品目前处于开发阶段，预约仅锁定早鸟权益，暂不售卖、暂不发货
-            </p>
-        </div>
+        <section class="disclaimer">
+            <p class="disclaimer-text">本产品目前处于开发阶段，预约仅锁定早鸟权益，暂不售卖、暂不发货</p>
+        </section>
 
         <!-- Footer -->
         <footer class="footer">
-            <div class="footer-badge">
-                <span>🚀</span>
-                <span>Launching Soon</span>
-            </div>
+            <div class="footer-badge">Launching Soon</div>
             <p class="footer-text">Secure your early bird spot today</p>
         </footer>
     </div>
@@ -367,11 +407,8 @@
     <script>
         function handleSubmit(event) {
             event.preventDefault();
-            const form = document.getElementById('emailForm');
-            const successMessage = document.getElementById('successMessage');
-            
-            form.style.display = 'none';
-            successMessage.classList.add('show');
+            document.getElementById('formContainer').style.display = 'none';
+            document.getElementById('successState').classList.add('show');
         }
     </script>
 </body>
