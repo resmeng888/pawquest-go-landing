@@ -21,10 +21,15 @@ Or standalone (separate in-memory simulator — for protocol smoke tests only)::
 from __future__ import annotations
 
 import asyncio
+import os
 import time
 from typing import Optional
 
 from gt06_0x13_parse import parse_0x13_status_info
+
+# Field test default: MACAU (East, positive lng ~113.5°E).
+# Override on server: REGION_SETTING=USA  (Western hemisphere, negative lng).
+REGION_SETTING = os.environ.get("REGION_SETTING", "MACAU").strip().upper()
 
 # Login ACK required by hardware (exact bytes).
 LOGIN_ACK = bytes.fromhex("787801010d0a")
@@ -46,8 +51,8 @@ def decode_bcd_imei(raw: bytes) -> str:
 
 def raw_coord_to_decimal(raw: int) -> float:
     """
-    365GPS-style coordinate: raw uint32 / 30000 → 度分 (DDMM.mmmm style), then decimal degrees.
-    Absolute magnitude; apply hemisphere when decoding for NYC.
+    365GPS-style coordinate: raw uint32 / 30000 → DDMM.mmmm, then decimal degrees.
+    Magnitude only; hemisphere is applied in ``raw_lng_to_decimal_west``.
     """
     x = float(raw) / 30000.0
     degrees = int(x // 100)
@@ -56,8 +61,16 @@ def raw_coord_to_decimal(raw: int) -> float:
 
 
 def raw_lng_to_decimal_west(raw: int) -> float:
-    """Longitude in GT06 is absolute; PawQuest US deployment = Western hemisphere."""
-    return -abs(raw_coord_to_decimal(raw))
+    """
+    GT06 longitude is sent as absolute magnitude; sign depends on ``REGION_SETTING``.
+
+    - MACAU (default): East hemisphere → positive (e.g. 113.5°E).
+    - USA / other: West hemisphere → negative (e.g. -73.9°W).
+    """
+    dec = raw_coord_to_decimal(raw)
+    if REGION_SETTING == "MACAU":
+        return abs(dec)
+    return -abs(dec)
 
 
 def _split_gt06_body(body: bytes) -> Optional[tuple[int, bytes]]:
@@ -142,7 +155,7 @@ async def _handle_client(reader: asyncio.StreamReader, writer: asyncio.StreamWri
                     lng_raw = int.from_bytes(info[4:8], "big")
                     speed_kmh = float(info[8])
                     lat = raw_coord_to_decimal(lat_raw)
-                    lng = raw_lng_to_decimal_west(lng_raw)
+                    lng = raw_lng_to_decimal_west(lng_raw)  # region-aware (REGION_SETTING)
                     sim.apply_tcp_gps(dog, lat, lng, speed_kmh)
                     print(
                         f"[365GPS] LOC {dog} lat={lat:.6f} lng={lng:.6f} spd={speed_kmh:.1f}km/h",
@@ -207,7 +220,7 @@ async def _handle_client(reader: asyncio.StreamReader, writer: asyncio.StreamWri
 async def serve_tcp_gateway(host: str = "0.0.0.0", port: int = 6063) -> None:
     server = await asyncio.start_server(_handle_client, host=host, port=port)
     addrs = ", ".join(str(s.getsockname()) for s in server.sockets or [])
-    print(f"[365GPS] listening TCP {addrs}", flush=True)
+    print(f"[365GPS] listening TCP {addrs} | REGION_SETTING={REGION_SETTING}", flush=True)
     async with server:
         await server.serve_forever()
 
