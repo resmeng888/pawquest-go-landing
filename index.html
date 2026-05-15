@@ -3,7 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PawQuest Go - Your Pet's AI Companion</title>
+    <title>PawQuest Go</title>
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""
+    />
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -24,312 +37,1337 @@
             color: var(--text);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
-        }
-        
-        .container {
-            max-width: 430px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-        
-        /* Hero */
-        .hero {
-            padding: 80px 0 48px;
-            text-align: center;
-        }
-        
-        .logo {
-            width: 72px;
-            height: 72px;
-            background: linear-gradient(135deg, var(--accent) 0%, #7BA3F0 100%);
-            border-radius: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            margin: 0 auto 28px;
-            box-shadow: 0 8px 32px rgba(91,141,239,0.3);
-        }
-        
-        .headline {
-            font-size: 36px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 12px;
-        }
-        
-        .subheadline {
-            font-size: 17px;
-            color: var(--text-secondary);
-            max-width: 300px;
-            margin: 0 auto;
-        }
-        
-        /* Showcase */
-        .showcase {
-            padding: 0 0 48px;
-            text-align: center;
-        }
-        
-        .phone-frame {
-            background: var(--card);
-            border-radius: 32px;
-            padding: 16px 16px 0;
-            box-shadow: var(--shadow);
-            max-width: 260px;
-            margin: 0 auto;
-        }
-        
-        .phone-screen {
-            aspect-ratio: 9/16;
-            background: linear-gradient(180deg, #F0F4F8 0%, #FFFFFF 100%);
-            border-radius: 24px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
+            height: 100%;
             overflow: hidden;
         }
-        
-        .pet-avatar {
-            width: 140px;
-            height: 140px;
-            background: linear-gradient(145deg, #E8EEF5 0%, #F5F8FB 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 72px;
-            box-shadow: 0 8px 32px rgba(91,141,239,0.15);
-            margin-bottom: 16px;
+
+        html {
+            height: 100%;
         }
         
-        .pet-status {
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--accent);
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        #map {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
         }
-        
-        /* Features */
-        .features {
-            padding: 0 0 40px;
-        }
-        
-        .feature-card {
-            background: var(--card);
-            border-radius: 20px;
-            padding: 24px;
-            margin-bottom: 12px;
-            box-shadow: var(--shadow);
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-        }
-        
-        .feature-icon {
-            width: 48px;
-            height: 48px;
-            background: rgba(91,141,239,0.1);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            flex-shrink: 0;
-        }
-        
-        .feature-content h3 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-        
-        .feature-content p {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-        
-        /* CTA */
-        .cta {
-            padding: 0 0 32px;
-        }
-        
-        .cta-card {
-            background: var(--card);
-            border-radius: 24px;
-            padding: 32px 24px;
-            text-align: center;
-            box-shadow: var(--shadow);
-        }
-        
-        .cta-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-        
-        .cta-subtitle {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 24px;
-        }
-        
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        
-        .email-input {
-            width: 100%;
-            padding: 16px 20px;
-            background: #F3F4F6;
-            border: 1px solid transparent;
-            border-radius: 14px;
-            font-size: 15px;
-            outline: none;
-            transition: all 0.2s;
-        }
-        
-        .email-input:focus {
-            background: #FFFFFF;
-            border-color: var(--accent);
-        }
-        
-        .submit-btn {
-            width: 100%;
-            padding: 16px 24px;
-            background: var(--accent);
-            color: #FFFFFF;
-            border: none;
-            border-radius: 14px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .submit-btn:hover {
-            background: var(--accent-dark);
-        }
-        
-        .success-message {
-            display: none;
-            color: #10B981;
-            font-size: 16px;
-            font-weight: 500;
-        }
-        
-        .success-message.show {
-            display: block;
-        }
-        
-        /* Footer */
-        .footer {
-            padding: 0 0 48px;
-            text-align: center;
-        }
-        
-        .footer-badge {
+
+        .pill {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            background: rgba(91,141,239,0.1);
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(91,141,239,0.10);
             color: var(--accent);
-            padding: 10px 20px;
-            border-radius: 24px;
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 12px;
-        }
-        
-        .footer-text {
+            font-weight: 600;
             font-size: 12px;
-            color: var(--text-muted);
+            white-space: nowrap;
         }
+
+        .fps-counter {
+            position: fixed;
+            left: 16px;
+            top: 16px;
+            z-index: 10000;
+            padding: 4px 8px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            font-size: 11px;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            color: #374151;
+            letter-spacing: 0.02em;
+            pointer-events: none;
+        }
+        .fps-counter.fps-warn {
+            color: #B45309;
+            border-color: rgba(245, 158, 11, 0.45);
+            background: rgba(255, 251, 235, 0.95);
+        }
+
+        .status-panel {
+            position: fixed;
+            left: 16px;
+            top: 48px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            z-index: 9999;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .pq-stack {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .pq-stack .dog-marker {
+            pointer-events: auto;
+            position: relative;
+            z-index: 3;
+        }
+
+        .pq-stack .status-capsule {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 7px;
+            border-radius: 6px;
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.88);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "PingFang TC", "Hiragino Sans", "Microsoft JhengHei", sans-serif;
+            font-size: 9px;
+            font-weight: 500;
+            color: #52525b;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+            pointer-events: none;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
+        .pq-stack .status-capsule .sc-status-fixed {
+            display: inline-block;
+            min-width: 80px;
+            text-align: right;
+            white-space: nowrap;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
+        .pq-stack .status-capsule .sc-emoji,
+        .pq-stack .status-capsule .sc-label {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
+        /* 預設僅頭像；標籤收合不遮地圖 */
+        .pq-stack:not(:hover) .status-capsule {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(3px);
+            max-height: 0;
+            margin-bottom: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s,
+                max-height 0.2s ease, margin-bottom 0.2s ease, padding 0.2s ease;
+        }
+
+        .pq-stack:hover .status-capsule {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            max-height: 40px;
+            margin-bottom: 4px;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            transition: opacity 0.2s ease 0.04s, transform 0.2s ease 0.04s, visibility 0s linear 0s,
+                max-height 0.2s ease 0.04s, margin-bottom 0.2s ease 0.04s, padding 0.2s ease 0.04s;
+        }
+
+        .sc-emoji {
+            font-size: 11px;
+            line-height: 1;
+        }
+
+        .sc-label {
+            max-width: 6rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Leaflet 預設 .leaflet-div-icon 會畫白底方塊 — 必須透明 */
+        .pq-dog-smooth {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            /* Position glide handled by requestAnimationFrame — avoid fighting Leaflet transform */
+        }
+
+        .dog-marker {
+            width: 28px;
+            height: 28px;
+            display: grid;
+            place-items: center;
+            border-radius: 999px;
+            background: #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            border: 1px solid rgba(0, 0, 0, 0.88);
+            transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .dog-marker i {
+            font-size: 16px;
+            line-height: 1;
+            display: block;
+            transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .dog-marker.batt-high {
+            border-width: 1px;
+            border-color: rgba(16, 185, 129, 0.55);
+            background: rgba(16, 185, 129, 0.10);
+        }
+
+        .dog-marker.batt-med {
+            border-width: 1px;
+            border-color: rgba(245, 158, 11, 0.55);
+            background: rgba(245, 158, 11, 0.10);
+        }
+
+        .dog-marker.batt-low {
+            border-width: 1px;
+            border-color: rgba(239, 68, 68, 0.70);
+            background: rgba(239, 68, 68, 0.12);
+        }
+
+        .dog-marker.batt-critical {
+            border-width: 1px;
+            border-color: rgba(239, 68, 68, 0.92);
+            background: rgba(239, 68, 68, 0.18);
+            animation: pqBlink 0.9s infinite;
+        }
+
+        @keyframes pqBlink {
+            0% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(239,68,68,0)); }
+            50% { transform: scale(1.06); filter: drop-shadow(0 0 10px rgba(239,68,68,0.55)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(239,68,68,0)); }
+        }
+
+        .dog-marker.sound-playing {
+            border-width: 1px;
+            border-color: rgba(37, 99, 235, 0.92);
+            background: rgba(37, 99, 235, 0.12);
+            animation: pqBlinkBlue 0.75s infinite;
+        }
+
+        @keyframes pqBlinkBlue {
+            0% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(37,99,235,0)); }
+            50% { transform: scale(1.08); filter: drop-shadow(0 0 12px rgba(37,99,235,0.60)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(37,99,235,0)); }
+        }
+
+        .play-sound-btn {
+            width: 100%;
+            margin-top: 10px;
+            padding: 12px 12px;
+            border: none;
+            border-radius: 14px;
+            background: #2563EB;
+            color: #fff;
+            font-weight: 800;
+            font-size: 13px;
+            cursor: pointer;
+            transition: transform 0.05s ease, background 0.15s ease;
+        }
+        .play-sound-btn:hover { background: #1D4ED8; }
+        .play-sound-btn:active { transform: translateY(1px); }
+        .play-sound-btn[disabled] {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Alert log (top-right) */
+        .alert-panel {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            width: min(340px, calc(100vw - 32px));
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            padding: 12px 12px 10px;
+            z-index: 9999;
+        }
+        .alert-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .alert-title .left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .alert-title .icon {
+            width: 30px;
+            height: 30px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: rgba(239, 68, 68, 0.12);
+            color: #EF4444;
+            font-weight: 900;
+        }
+        .alert-title .txt {
+            font-weight: 800;
+            font-size: 13px;
+            letter-spacing: 0.2px;
+        }
+        .alert-title .count {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .alert-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 8px;
+            max-height: 210px;
+            overflow: auto;
+        }
+        .alert-item {
+            background: #F3F4F6;
+            border-radius: 14px;
+            padding: 10px 12px;
+            display: grid;
+            gap: 4px;
+            position: relative;
+        }
+        .alert-item .msg {
+            font-size: 12.5px;
+            font-weight: 800;
+            color: #B91C1C;
+        }
+        .alert-item .ts {
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+        .alert-item.critical {
+            background: rgba(239, 68, 68, 0.16);
+            border: 1px solid rgba(127, 29, 29, 0.22);
+        }
+        .alert-item.critical .msg {
+            color: #7F1D1D;
+            font-weight: 900;
+        }
+        .alert-close {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 26px;
+            height: 26px;
+            border-radius: 10px;
+            border: 1px solid rgba(17,24,39,0.10);
+            background: rgba(255,255,255,0.85);
+            color: rgba(17,24,39,0.60);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+            line-height: 1;
+        }
+        .alert-close:hover {
+            background: rgba(255,255,255,0.95);
+            color: rgba(17,24,39,0.78);
+        }
+
+        /* Popup polish */
+        .leaflet-popup-content-wrapper {
+            border-radius: 16px;
+            box-shadow: 0 18px 50px rgba(0,0,0,0.18);
+            transition: opacity 0.25s ease;
+        }
+
+        .pq-popup.leaflet-popup {
+            transition: opacity 0.25s ease;
+        }
+        .pq-popup .leaflet-popup-content {
+            margin: 12px 16px 14px 14px;
+            min-width: 240px;
+            max-width: 280px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .pq-popup .leaflet-popup-content-wrapper {
+            min-width: 240px;
+            max-width: 280px;
+            box-sizing: border-box;
+        }
+
+        .dog-popup.popup-container {
+            min-width: 240px;
+            max-width: 280px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        .dog-popup .title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .dog-popup .badge {
+            width: 34px;
+            height: 34px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            background: rgba(91,141,239,0.12);
+            color: var(--accent);
+            font-size: 18px;
+        }
+        .dog-popup .name {
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 0.2px;
+        }
+        .dog-popup .meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+        .dog-popup .rows {
+            display: grid;
+            gap: 8px;
+        }
+        .dog-popup .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 15px 10px 12px;
+            border-radius: 14px;
+            background: #F3F4F6;
+            font-size: 13px;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+        .dog-popup .row .k {
+            color: var(--text-secondary);
+            font-weight: 600;
+            white-space: nowrap;
+            flex: 1;
+            min-width: 0;
+        }
+        .dog-popup .row .v {
+            font-weight: 800;
+            color: var(--text);
+            white-space: nowrap;
+            flex: 0 0 auto;
+            text-align: right;
+            margin-left: auto;
+            padding-left: 8px;
+            padding-right: 12px;
+            max-width: 62%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .dog-popup .row[data-row="speed"] {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .dog-popup .row[data-row="speed"] .k {
+            flex: 0 0 auto;
+        }
+        .dog-popup .row[data-row="speed"] .v {
+            font-size: 12px;
+            letter-spacing: -0.02em;
+            max-width: none;
+            overflow: visible;
+            text-overflow: clip;
+            flex: 0 0 auto;
+            padding-right: 8px;
+        }
+        .dog-popup .row[data-row="activity"] {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .dog-popup .row[data-row="activity"] .v {
+            font-size: 12px;
+            max-width: none;
+            flex: 0 0 auto;
+            overflow: visible;
+            text-overflow: clip;
+        }
+        .dog-popup .battery-value {
+            display: inline-flex;
+            align-items: baseline;
+            justify-content: flex-end;
+            gap: 0;
+            transition: all 0.3s ease;
+        }
+        .dog-popup .speed-value {
+            display: block;
+            flex: 0 0 auto;
+            transition: none;
+        }
+        .dog-popup .speed-status-fixed {
+            display: inline-block;
+            min-width: 132px;
+            text-align: right;
+            white-space: nowrap;
+            font-variant-numeric: tabular-nums;
+            font-feature-settings: 'tnum' 1;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        .dog-popup .speed-value .metric-num,
+        .dog-popup .speed-value .metric-unit {
+            font-variant-numeric: tabular-nums;
+            transition: none;
+        }
+        .dog-popup .activity-value {
+            display: block;
+            flex: 0 0 auto;
+            transition: none;
+        }
+        .dog-popup .activity-status-fixed {
+            display: inline-block;
+            min-width: 88px;
+            text-align: right;
+            white-space: nowrap;
+            font-variant-numeric: tabular-nums;
+            font-feature-settings: 'tnum' 1;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        .dog-popup .metric-num {
+            font-variant-numeric: tabular-nums;
+            font-feature-settings: 'tnum' 1;
+            transition: all 0.3s ease;
+        }
+        .dog-popup .metric-unit {
+            font-variant-numeric: normal;
+            transition: opacity 0.3s ease;
+        }
+        .dog-popup .activity-value .metric-emoji,
+        .dog-popup .activity-value .metric-label {
+            font-variant-numeric: tabular-nums;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            transition: none;
+        }
+        .dog-popup .row.low .v { color: #EF4444; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <section class="hero">
-            <div class="logo">🐾</div>
-            <h1 class="headline">PawQuest Go</h1>
-            <p class="subheadline">Your Pet's AI Companion with Real-Time GPS Adventure</p>
-        </section>
-        
-        <section class="showcase">
-            <div class="phone-frame">
-                <div class="phone-screen">
-                    <div class="pet-avatar">🐕</div>
-                    <div class="pet-status">AI Buddy Active</div>
-                </div>
+    <div id="map"></div>
+    <div id="fpsCounter" class="fps-counter" title="Render performance">FPS —</div>
+    <div class="alert-panel" id="alertPanel">
+        <div class="alert-title">
+            <div class="left">
+                <div class="icon">!</div>
+                <div class="txt">Alert log</div>
             </div>
-        </section>
-        
-        <section class="features">
-            <div class="feature-card">
-                <div class="feature-icon">🎨</div>
-                <div class="feature-content">
-                    <h3>Real Pet AI Avatar</h3>
-                    <p>Upload your pet's photo and AI creates a living digital twin</p>
-                </div>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">📍</div>
-                <div class="feature-content">
-                    <h3>Real-Time GPS Tracking</h3>
-                    <p>Always know where your pet is with smart geofence alerts</p>
-                </div>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🎮</div>
-                <div class="feature-content">
-                    <h3>Walk & Adventure Game</h3>
-                    <p>Turn daily walks into exciting quests and collect rewards</p>
-                </div>
-            </div>
-        </section>
-        
-        <section class="cta">
-            <div class="cta-card">
-                <div id="formContent">
-                    <h2 class="cta-title">Be the First to Know</h2>
-                    <p class="cta-subtitle">Join our early access list for exclusive launch benefits</p>
-                    
-                    <form class="form-group" onsubmit="handleSubmit(event)">
-                        <input type="email" class="email-input" placeholder="Enter your email" required>
-                        <button type="submit" class="submit-btn">Get Early Access</button>
-                    </form>
-                </div>
-                <div class="success-message" id="successMsg">
-                    ✓ Thanks! We'll notify you when we launch.
-                </div>
-            </div>
-        </section>
-        
-        <footer class="footer">
-            <div class="footer-badge">
-                <span>🚀</span>
-                <span>Launching Soon</span>
-            </div>
-            <p class="footer-text">Secure your early bird spot today</p>
-        </footer>
+            <div class="count" id="alertCount">0</div>
+        </div>
+        <ul class="alert-list" id="alertList"></ul>
+    </div>
+    <div class="status-panel">
+        <div id="wsStatus">Status: connecting…</div>
+        <div class="pill" id="regionTag">Central Park · NYC</div>
+        <div class="pill" id="dogCount">Dogs: 0/100</div>
     </div>
     
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""
+    ></script>
     <script>
-        function handleSubmit(e) {
-            e.preventDefault();
-            document.getElementById('formContent').style.display = 'none';
-            document.getElementById('successMsg').classList.add('show');
+        // --- Live map ---
+        const map = L.map('map', { zoomControl: false }).setView([40.7812, -73.9665], 15);
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap'
+        }).addTo(map);
+
+        // No MarkerCluster — each dog is an independent L.marker (100 visible icons).
+        const markers = new Map(); // id -> L.marker
+        const dogData = new Map(); // id -> latest data
+        const wsStatusEl = document.getElementById('wsStatus');
+        const dogCountEl = document.getElementById('dogCount');
+        const fpsCounterEl = document.getElementById('fpsCounter');
+        const WS_RECONNECT_MS = 3000;
+        const FPS_WARN_BELOW = 30;
+        let activePopupDogId = null;
+        const alertListEl = document.getElementById('alertList');
+        const alertCountEl = document.getElementById('alertCount');
+        const warningSuppressed = new Set(); // dogId -> user closed warning
+        const warningAlertElByDog = new Map(); // dogId -> li
+        const criticalAlertElByDog = new Map(); // dogId -> li
+        const sounding = new Map(); // id -> untilTsMs (client-side fallback)
+        const dogHistory = new Map(); // id -> Array<[lat,lng]> (max 50)
+        let selectedHistoryDogId = null;
+        const historyLayer = L.layerGroup().addTo(map);
+        const markerGlides = new Map();
+        const MARKER_GLIDE_MS = 920;
+
+        function easeOutCubic(t) {
+            return 1 - Math.pow(1 - t, 3);
         }
+
+        function scheduleMarkerGlide(id, lat, lng) {
+            const m = markers.get(id);
+            if (!m) return;
+            const cur = m.getLatLng();
+            const dLat = Math.abs(cur.lat - lat);
+            const dLng = Math.abs(cur.lng - lng);
+            if (dLat < 1e-8 && dLng < 1e-8) return;
+            markerGlides.set(id, {
+                fromLat: cur.lat,
+                fromLng: cur.lng,
+                toLat: lat,
+                toLng: lng,
+                start: performance.now(),
+                duration: MARKER_GLIDE_MS,
+            });
+        }
+
+        function runMarkerGlideLoop() {
+            const now = performance.now();
+            for (const [id, g] of markerGlides) {
+                const m = markers.get(id);
+                if (!m) {
+                    markerGlides.delete(id);
+                    continue;
+                }
+                const t = Math.min(1, (now - g.start) / g.duration);
+                const e = easeOutCubic(t);
+                m.setLatLng([
+                    g.fromLat + (g.toLat - g.fromLat) * e,
+                    g.fromLng + (g.toLng - g.fromLng) * e,
+                ]);
+                if (t >= 1) markerGlides.delete(id);
+            }
+            requestAnimationFrame(runMarkerGlideLoop);
+        }
+        requestAnimationFrame(runMarkerGlideLoop);
+
+        (function startFpsMonitor() {
+            let frames = 0;
+            let last = performance.now();
+            function tick(now) {
+                frames += 1;
+                const elapsed = now - last;
+                if (elapsed >= 500 && fpsCounterEl) {
+                    const fps = Math.round((frames * 1000) / elapsed);
+                    frames = 0;
+                    last = now;
+                    fpsCounterEl.textContent = fps < FPS_WARN_BELOW
+                        ? `FPS ${fps} · optimize`
+                        : `FPS ${fps}`;
+                    fpsCounterEl.classList.toggle('fps-warn', fps < FPS_WARN_BELOW);
+                }
+                requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+        })();
+
+        function batteryColor(b) {
+            if (b >= 60) return '#10B981'; // green
+            if (b >= 20) return '#F59E0B'; // amber
+            return '#EF4444'; // red
+        }
+
+        function batteryClass(b) {
+            if (b >= 60) return 'batt-high';
+            if (b >= 20) return 'batt-med';
+            return 'batt-low'; // battery < 20
+        }
+
+        function behaviorTierFromLabel(label) {
+            const s = String(label ?? '');
+            if (s === 'Zoomies' || s === '拆家中') return 'chaos';
+            if (s === 'On patrol' || s === '巡逻中' || s === '巡視領地') return 'patrol';
+            return 'charge';
+        }
+
+        function esc(s) {
+            return String(s ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function dogMarkerVisuals(d) {
+            const id = d?.id ?? '';
+            const b = Number.isFinite(Number(d?.battery)) ? Number(d.battery) : 100;
+            const isLow = b < 20;
+            const isCritical = b < 5;
+            const isSound = Boolean(d?.sound) || (Number.isFinite(Number(sounding.get(d?.id))) && Date.now() < sounding.get(d?.id));
+            const sp = Number.isFinite(Number(d?.speed)) ? Number(d.speed) : 0;
+            const color = isSound ? '#2563EB' : isLow ? '#EF4444' : batteryColor(b);
+            const cls = isSound ? 'sound-playing' : isCritical ? 'batt-critical' : isLow ? 'batt-low' : batteryClass(b);
+            const emoji = d?.behavior_emoji != null ? String(d.behavior_emoji) : '💤';
+            const label = d?.behavior_label != null ? String(d.behavior_label) : 'Resting';
+            const tier = behaviorTierFromLabel(label);
+            let wobbleDeg = 0;
+            if (!isCritical && !isSound && sp > 0.3) {
+                wobbleDeg = Math.sin(Date.now() / 275 + (id.length || 0)) * 8;
+            }
+            return { id, color, cls, emoji, label, tier, wobbleDeg };
+        }
+
+        function dogDivIcon(d) {
+            const v = dogMarkerVisuals(d);
+            const capDomId = v.id ? `status-capsule-${v.id.replace(/[^a-zA-Z0-9_-]/g, '_')}` : 'status-capsule';
+            const iconSize = [34, 30];
+            const iconAnchor = [17, 15];
+            return L.divIcon({
+                className: 'pq-dog-smooth',
+                iconSize,
+                iconAnchor,
+                tooltipAnchor: [0, -10],
+                html: `
+                    <div class="pq-stack" data-dog-id="${esc(v.id)}" data-tier="${v.tier}">
+                        <div class="status-capsule" id="${esc(capDomId)}">
+                            <span class="sc-status-fixed">
+                                <span class="sc-emoji"></span><span class="sc-label"></span>
+                            </span>
+                        </div>
+                        <div class="dog-marker ${v.cls}">
+                            <i class="fa-solid fa-dog" style="color:${v.color};transform:rotate(${v.wobbleDeg.toFixed(2)}deg)"></i>
+                        </div>
+                    </div>`
+            });
+        }
+
+        /** In-place update of marker icon DOM — avoids setIcon() destroying nodes (stable hover). */
+        function patchDogMarkerDom(m, d) {
+            const root = typeof m.getElement === 'function' ? m.getElement() : m._icon;
+            if (!root) return false;
+            const stack = root.querySelector('.pq-stack');
+            const cap = root.querySelector('.status-capsule');
+            const dm = root.querySelector('.dog-marker');
+            const iconEl = root.querySelector('.dog-marker i');
+            if (!stack || !cap || !dm || !iconEl) return false;
+            const v = dogMarkerVisuals(d);
+            stack.dataset.dogId = v.id;
+            stack.dataset.tier = v.tier;
+            const em = cap.querySelector('.sc-emoji');
+            const lb = cap.querySelector('.sc-label');
+            const actKey = v.emoji + '\u0000' + v.label;
+            if (cap.dataset.activityKey !== actKey) {
+                cap.dataset.activityKey = actKey;
+                if (em && em.textContent !== v.emoji) em.textContent = v.emoji;
+                if (lb && lb.textContent !== v.label) lb.textContent = v.label;
+            }
+            dm.className = 'dog-marker ' + v.cls;
+            iconEl.style.color = v.color;
+            iconEl.style.transform = 'rotate(' + v.wobbleDeg.toFixed(2) + 'deg)';
+            return true;
+        }
+
+        function setDogHistory(id, latlngs) {
+            if (!id) return;
+            const cleaned = Array.isArray(latlngs) ? latlngs.filter(p => Array.isArray(p) && p.length === 2) : [];
+            if (!cleaned.length) return;
+            // Keep last 50 (snapshot may send full history)
+            const sliced = cleaned.slice(-50);
+            dogHistory.set(id, sliced);
+        }
+
+        /** Append latest position on each tick; cap at 50 using shift() for oldest. */
+        function pushDogHistoryFromTick(id, lat, lng) {
+            if (!id || !Number.isFinite(lat) || !Number.isFinite(lng)) return;
+            const arr = dogHistory.get(id) || [];
+            arr.push([lat, lng]);
+            while (arr.length > 50) arr.shift();
+            dogHistory.set(id, arr);
+        }
+
+        function clearHistoryOverlay() {
+            historyLayer.clearLayers();
+            selectedHistoryDogId = null;
+        }
+
+        function paintHistoryPathForDog(dogId) {
+            historyLayer.clearLayers();
+            const pts = dogHistory.get(dogId) || [];
+            if (pts.length < 2) return;
+
+            const poly = L.polyline(pts, {
+                color: 'rgba(99,102,241,0.55)', // indigo-ish
+                weight: 5,
+                opacity: 0.75,
+                lineJoin: 'round',
+                lineCap: 'round'
+            });
+            poly.addTo(historyLayer);
+
+            const start = pts[0];
+            const end = pts[pts.length - 1];
+
+            L.circleMarker(start, {
+                radius: 5,
+                weight: 2,
+                color: '#A855F7',
+                fillColor: '#A855F7',
+                fillOpacity: 0.55
+            }).addTo(historyLayer);
+
+            L.circleMarker(end, {
+                radius: 7,
+                weight: 3,
+                color: '#2563EB',
+                fillColor: '#FFFFFF',
+                fillOpacity: 0.25
+            }).addTo(historyLayer);
+        }
+
+        function showHistoryOverlay(dogId) {
+            if (!dogId) return;
+            selectedHistoryDogId = dogId;
+            paintHistoryPathForDog(dogId);
+        }
+
+        /** After tick updates dogHistory, redraw trail if a dog is selected. */
+        function redrawHistoryOverlayForSelection() {
+            if (!selectedHistoryDogId) return;
+            paintHistoryPathForDog(selectedHistoryDogId);
+        }
+
+        function updateAlertCount() {
+            alertCountEl.textContent = String(alertListEl.children.length);
+        }
+
+        function createAlertEl({ dogId, severity, msg }) {
+            const ts = new Date();
+            const tsStr = ts.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+            const li = document.createElement('li');
+            li.className = `alert-item ${severity === 'critical' ? 'critical' : ''}`.trim();
+            li.dataset.dogId = dogId;
+            li.dataset.severity = severity;
+            li.innerHTML = `
+                <button class="alert-close" title="Close" aria-label="Close">×</button>
+                <div class="msg">${msg}</div>
+                <div class="ts">${tsStr}</div>
+            `;
+            return li;
+        }
+
+        function removeAlertEl(li) {
+            if (!li) return;
+            if (li.parentNode === alertListEl) alertListEl.removeChild(li);
+            updateAlertCount();
+        }
+
+        function removeAllAlertsForDog(dogId) {
+            removeAlertEl(warningAlertElByDog.get(dogId));
+            removeAlertEl(criticalAlertElByDog.get(dogId));
+            warningAlertElByDog.delete(dogId);
+            criticalAlertElByDog.delete(dogId);
+            warningSuppressed.delete(dogId);
+        }
+
+        function ensureWarningAlert(dogId) {
+            if (warningSuppressed.has(dogId)) return;
+            if (warningAlertElByDog.has(dogId)) return;
+            const li = createAlertEl({
+                dogId,
+                severity: 'warning',
+                msg: `[Warning] 狗 ID: ${dogId} 電量低於 20%！`
+            });
+            alertListEl.prepend(li);
+            warningAlertElByDog.set(dogId, li);
+            // Keep latest 10
+            while (alertListEl.children.length > 10) {
+                alertListEl.removeChild(alertListEl.lastChild);
+            }
+            updateAlertCount();
+        }
+
+        function ensureCriticalAlert(dogId) {
+            if (criticalAlertElByDog.has(dogId)) return;
+            const li = createAlertEl({
+                dogId,
+                severity: 'critical',
+                msg: `[CRITICAL] 狗 ID: ${dogId} 電量極低（<5%）！`
+            });
+            alertListEl.prepend(li);
+            criticalAlertElByDog.set(dogId, li);
+            // Battery dropped to critical: allow warning to be shown again later (per rule).
+            warningSuppressed.delete(dogId);
+            // Keep latest 10
+            while (alertListEl.children.length > 10) {
+                alertListEl.removeChild(alertListEl.lastChild);
+            }
+            updateAlertCount();
+        }
+
+        function handleAlertLogic(d) {
+            const dogId = d?.id;
+            const b = Number.isFinite(Number(d?.battery)) ? Number(d.battery) : 100;
+            if (!dogId) return;
+
+            // Auto-clear when battery >= 20 (simulate charging)
+            if (b >= 20) {
+                removeAllAlertsForDog(dogId);
+                return;
+            }
+
+            // Second-tier: critical (<5) always shows, ignoring prior closes
+            if (b < 5) {
+                ensureCriticalAlert(dogId);
+                return;
+            }
+
+            // First-tier: warning (<20) can be dismissed; suppressed until battery drops to <5
+            ensureWarningAlert(dogId);
+        }
+
+        // Close button handling
+        alertListEl.addEventListener('click', (e) => {
+            const btn = e.target && e.target.closest ? e.target.closest('button.alert-close') : null;
+            if (!btn) return;
+            const li = btn.closest('li.alert-item');
+            if (!li) return;
+            const dogId = li.dataset.dogId;
+            const sev = li.dataset.severity;
+
+            if (sev === 'warning') {
+                warningSuppressed.add(dogId);
+                warningAlertElByDog.delete(dogId);
+            } else if (sev === 'critical') {
+                criticalAlertElByDog.delete(dogId);
+            }
+            removeAlertEl(li);
+        });
+
+        function fmtBattery(battery) {
+            const b = Number.isFinite(Number(battery)) ? Number(battery) : 0;
+            return `${Math.round(b)}%`;
+        }
+
+        const KMH_TO_MPH = 0.621371;
+
+        function speedParts(speed) {
+            const kmh = Number.isFinite(Number(speed)) ? Number(speed) : 0;
+            const mph = kmh * KMH_TO_MPH;
+            return { mph: mph.toFixed(1), kmh: kmh.toFixed(1) };
+        }
+
+        function speedStateKey(speed) {
+            const sp = speedParts(speed);
+            return { ...sp, key: sp.mph + '\u0000' + sp.kmh };
+        }
+
+        function fmtSpeedKmh(speed) {
+            const sp = speedParts(speed);
+            return `${sp.mph} mph (${sp.kmh} km/h)`;
+        }
+
+        function popupHtml(d) {
+            const id = d?.id ?? 'dog_???';
+            const b = Number.isFinite(Number(d?.battery)) ? Number(d.battery) : 0;
+            const low = b < 20;
+            const isSound = Boolean(d?.sound) || (Number.isFinite(Number(sounding.get(id))) && Date.now() < sounding.get(id));
+            const sp = speedParts(d?.speed);
+            const emoji = d?.behavior_emoji != null ? String(d.behavior_emoji) : '💤';
+            const label = d?.behavior_label != null ? String(d.behavior_label) : 'Resting';
+            return `
+                <div class="dog-popup popup-container" data-dog-id="${id}">
+                    <div class="title">
+                        <div class="badge">🐶</div>
+                        <div>
+                            <div class="name">${id}</div>
+                            <div class="meta">Collar telemetry</div>
+                        </div>
+                    </div>
+                    <div class="rows">
+                        <div class="row ${low ? 'low' : ''}" data-row="battery">
+                            <div class="k">Battery</div>
+                            <div class="v battery-value" data-field="battery">
+                                <span class="metric-num" data-part="num">${Math.round(b)}</span><span class="metric-unit">%</span>
+                            </div>
+                        </div>
+                        <div class="row" data-row="speed">
+                            <div class="k">速度</div>
+                            <div class="v speed-value" data-field="speed" data-speed-key="${sp.mph}\u0000${sp.kmh}">
+                                <span class="speed-status-fixed">
+                                    <span class="metric-num" data-part="mph">${sp.mph}</span><span class="metric-unit"> mph (</span><span class="metric-num" data-part="kmh">${sp.kmh}</span><span class="metric-unit"> km/h)</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row" data-row="activity">
+                            <div class="k">活动</div>
+                            <div class="v activity-value" data-field="activity" data-activity-key="${esc(emoji)}\u0000${esc(label)}">
+                                <span class="activity-status-fixed">
+                                    <span class="metric-emoji" data-part="emoji">${esc(emoji)}</span><span class="metric-label" data-part="label"> ${esc(label)}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="play-sound-btn" data-action="play_sound" data-dog-id="${id}" ${isSound ? 'disabled' : ''}>
+                        Play locate chime
+                    </button>
+                </div>
+            `;
+        }
+
+        function setMetricText(el, nextText) {
+            if (!el) return;
+            const next = String(nextText ?? '');
+            if (el.textContent === next) return;
+            el.textContent = next;
+        }
+
+        function patchBatteryDisplay(container, battery) {
+            if (!container) return;
+            setMetricText(container.querySelector('[data-part="num"]'), String(Math.round(Number(battery) || 0)));
+        }
+
+        /** Skip DOM when speed unchanged; always show mph + km/h pair. */
+        function patchSpeedDisplay(container, speed) {
+            if (!container) return;
+            const fixed = container.querySelector('.speed-status-fixed');
+            if (!fixed) return;
+            const { mph, kmh, key } = speedStateKey(speed);
+            if (container.dataset.speedKey === key) return;
+            container.dataset.speedKey = key;
+            const mphEl = fixed.querySelector('[data-part="mph"]');
+            const kmhEl = fixed.querySelector('[data-part="kmh"]');
+            if (mphEl && mphEl.textContent !== mph) mphEl.textContent = mph;
+            if (kmhEl && kmhEl.textContent !== kmh) kmhEl.textContent = kmh;
+        }
+
+        function activityStateKey(d) {
+            const emoji = d?.behavior_emoji != null ? String(d.behavior_emoji) : '💤';
+            const label = d?.behavior_label != null ? String(d.behavior_label) : 'Resting';
+            return { emoji, label, key: emoji + '\u0000' + label };
+        }
+
+        /** Skip DOM when activity unchanged (e.g. stays On patrol / 巡逻中). */
+        function patchActivityDisplay(container, d) {
+            if (!container) return;
+            const { emoji, label, key } = activityStateKey(d);
+            if (container.dataset.activityKey === key) return;
+            container.dataset.activityKey = key;
+            const emojiEl = container.querySelector('[data-part="emoji"]');
+            const labelEl = container.querySelector('[data-part="label"]');
+            const labelText = ' ' + label;
+            if (emojiEl && emojiEl.textContent !== emoji) emojiEl.textContent = emoji;
+            if (labelEl && labelEl.textContent !== labelText) labelEl.textContent = labelText;
+        }
+
+        /** In-place popup update — numbers only; units pinned (no innerHTML). */
+        function patchPopupDom(d) {
+            const id = d?.id;
+            if (!id) return false;
+            const m = markers.get(id);
+            if (!m || !m.isPopupOpen()) return false;
+            const root = m.getPopup()?.getElement();
+            if (!root) return false;
+            const popup = root.querySelector('.dog-popup');
+            if (!popup) return false;
+            if (!popup.querySelector('[data-part="num"]')
+                || !popup.querySelector('.speed-status-fixed')
+                || !popup.querySelector('.activity-status-fixed')) return false;
+
+            const b = Number.isFinite(Number(d?.battery)) ? Number(d.battery) : 0;
+            const low = b < 20;
+            const isSound = Boolean(d?.sound) || (Number.isFinite(Number(sounding.get(id))) && Date.now() < sounding.get(id));
+
+            const batRow = popup.querySelector('[data-row="battery"]');
+            if (batRow) {
+                batRow.classList.toggle('low', low);
+                patchBatteryDisplay(batRow.querySelector('[data-field="battery"]'), b);
+            }
+            patchSpeedDisplay(popup.querySelector('[data-field="speed"]'), d?.speed);
+            patchActivityDisplay(popup.querySelector('[data-field="activity"]'), d);
+            const btn = popup.querySelector('.play-sound-btn');
+            if (btn) {
+                if (isSound) btn.setAttribute('disabled', 'disabled');
+                else btn.removeAttribute('disabled');
+            }
+            return true;
+        }
+
+        function refreshActivePopup() {
+            if (!activePopupDogId) return;
+            const d = dogData.get(activePopupDogId);
+            if (!d) return;
+            if (patchPopupDom(d)) return;
+            const m = markers.get(activePopupDogId);
+            if (!m || !m.isPopupOpen()) return;
+            const popup = m.getPopup();
+            if (popup) popup.setContent(popupHtml(d));
+        }
+
+
+        function coord6(x) {
+            return Math.round(Number(x) * 1e6) / 1e6;
+        }
+
+        function upsertDog(d) {
+            const id = d.id;
+            if (!id) return;
+            const merged = {
+                behavior_label: 'Resting',
+                behavior_emoji: '💤',
+                vibration: 0,
+                ...d,
+            };
+            const lat = Number(merged.lat);
+            const lng = Number(merged.lng);
+            if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+            const latlng = [coord6(lat), coord6(lng)];
+            merged.lat = latlng[0];
+            merged.lng = latlng[1];
+            const icon = dogDivIcon(merged);
+
+            let m = markers.get(id);
+            if (!m) {
+                m = L.marker(latlng, { icon, zIndexOffset: 0 }).addTo(map);
+                m.bindTooltip(id, { direction: 'top', opacity: 0.85, offset: [0, -10] });
+                m.bindPopup(popupHtml(merged), {
+                    closeButton: true,
+                    autoPan: false,
+                    autoClose: true,
+                    keepInView: false,
+                    maxWidth: 300,
+                    className: 'pq-popup'
+                });
+                m.on('popupopen', () => {
+                    activePopupDogId = id;
+                    refreshActivePopup();
+                });
+                m.on('popupclose', () => {
+                    if (activePopupDogId === id) activePopupDogId = null;
+                });
+                m.on('click', () => {
+                    showHistoryOverlay(id);
+                });
+                m.on('mouseover', () => {
+                    m._pqHover = true;
+                    if (typeof m.bringToFront === 'function') m.bringToFront();
+                    m.setZIndexOffset(920);
+                });
+                m.on('mouseout', () => {
+                    m._pqHover = false;
+                    const dd = dogData.get(id);
+                    const s = dd && Number.isFinite(Number(dd.speed)) ? Number(dd.speed) : 0;
+                    m.setZIndexOffset(s > 0.32 ? 480 : 0);
+                });
+                markers.set(id, m);
+                patchDogMarkerDom(m, merged);
+            } else {
+                scheduleMarkerGlide(id, latlng[0], latlng[1]);
+                if (!patchDogMarkerDom(m, merged)) {
+                    m.setIcon(dogDivIcon(merged));
+                    patchDogMarkerDom(m, merged);
+                }
+            }
+
+            dogData.set(id, merged);
+            if (!m._pqHover) {
+                const spMove = Number.isFinite(Number(merged.speed)) ? Number(merged.speed) : 0;
+                m.setZIndexOffset(spMove > 0.32 ? 480 : 0);
+            }
+            if (activePopupDogId === id && m.isPopupOpen()) patchPopupDom(merged);
+        }
+
+        function updateCount() {
+            dogCountEl.textContent = `Dogs: ${markers.size}/100`;
+        }
+
+        function wsUrl() {
+            const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+            return `${proto}://${location.host}/ws?n=100&seed=42&center=40.7812,-73.9665&radius=400`;
+        }
+
+        let ws = null;
+        let reconnectTimer = null;
+        let reconnectAttempt = 0;
+        let didFit = false;
+
+        function teardownSocket() {
+            if (!ws) return;
+            ws.onopen = null;
+            ws.onmessage = null;
+            ws.onerror = null;
+            ws.onclose = null;
+            if (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING) {
+                try { ws.close(); } catch (_) { /* ignore */ }
+            }
+            ws = null;
+        }
+
+        function connect() {
+            if (reconnectTimer) {
+                clearTimeout(reconnectTimer);
+                reconnectTimer = null;
+            }
+            teardownSocket();
+            wsStatusEl.textContent = reconnectAttempt > 0
+                ? `Status: reconnecting (attempt ${reconnectAttempt})…`
+                : 'Status: connecting…';
+            try {
+                ws = new WebSocket(wsUrl());
+            } catch (e) {
+                wsStatusEl.textContent = 'Status: failed to create WebSocket';
+                scheduleReconnect();
+                return;
+            }
+
+            ws.onopen = () => {
+                reconnectAttempt = 0;
+                wsStatusEl.textContent = 'Status: connected';
+            };
+            ws.onmessage = (evt) => {
+                let msg = null;
+                try { msg = JSON.parse(evt.data); } catch (_) { return; }
+                if (!msg) return;
+                if (msg.type === 'ack' && msg.action === 'play_sound' && msg.dog_id) {
+                    // Client-side fallback: reflect instantly even before next tick.
+                    sounding.set(msg.dog_id, Date.now() + 5000);
+                    const d = dogData.get(msg.dog_id);
+                    if (d) { d.sound = true; dogData.set(msg.dog_id, d); }
+                    const m = markers.get(msg.dog_id);
+                    if (m && d) {
+                        if (!patchDogMarkerDom(m, { ...d, id: msg.dog_id })) {
+                            m.setIcon(dogDivIcon({ ...d, id: msg.dog_id }));
+                            patchDogMarkerDom(m, { ...d, id: msg.dog_id });
+                        }
+                    }
+                    refreshActivePopup();
+                    return;
+                }
+                if (msg.type === 'sensor' && typeof msg.dog_id === 'string') {
+                    const id = msg.dog_id;
+                    const cur = dogData.get(id);
+                    if (cur) {
+                        cur.vibration = msg.vibration;
+                        cur.behavior_label = msg.label;
+                        cur.behavior_emoji = msg.emoji;
+                        dogData.set(id, cur);
+                        const m = markers.get(id);
+                        if (m) {
+                            if (!patchDogMarkerDom(m, cur)) {
+                                m.setIcon(dogDivIcon(cur));
+                                patchDogMarkerDom(m, cur);
+                            }
+                            if (!m._pqHover) {
+                                const sp = Number.isFinite(Number(cur.speed)) ? Number(cur.speed) : 0;
+                                m.setZIndexOffset(sp > 0.32 ? 480 : 0);
+                            }
+                            refreshActivePopup();
+                        }
+                    }
+                    return;
+                }
+                if (!msg.dogs) return;
+
+                // Snapshot: server may send initial history once.
+                if (msg.type === 'snapshot') {
+                    for (const d of msg.dogs) {
+                        if (Array.isArray(d.history) && d.history.length) {
+                            setDogHistory(d.id, d.history);
+                        } else if (d.id != null && Number.isFinite(Number(d.lat)) && Number.isFinite(Number(d.lng))) {
+                            dogHistory.set(d.id, [[Number(d.lat), Number(d.lng)]]);
+                        }
+                    }
+                }
+
+                // Tick: backend no longer sends history — append lat/lng on the client.
+                if (msg.type === 'tick') {
+                    for (const d of msg.dogs) {
+                        if (d.id != null && Number.isFinite(Number(d.lat)) && Number.isFinite(Number(d.lng))) {
+                            pushDogHistoryFromTick(d.id, Number(d.lat), Number(d.lng));
+                        }
+                    }
+                    redrawHistoryOverlayForSelection();
+                }
+
+                for (const d of msg.dogs) {
+                    upsertDog(d);
+                    handleAlertLogic(d);
+                }
+                updateCount();
+                if (!didFit && markers.size >= 100) {
+                    const latlngs = [];
+                    for (const mk of markers.values()) latlngs.push(mk.getLatLng());
+                    if (latlngs.length) {
+                        map.fitBounds(L.latLngBounds(latlngs), { padding: [18, 18] });
+                        didFit = true;
+                    }
+                }
+            };
+            ws.onerror = () => {
+                wsStatusEl.textContent = `Status: error (retry in ${WS_RECONNECT_MS / 1000}s)…`;
+            };
+            ws.onclose = () => {
+                ws = null;
+                wsStatusEl.textContent = `Status: disconnected (retry in ${WS_RECONNECT_MS / 1000}s)…`;
+                scheduleReconnect();
+            };
+        }
+
+        function scheduleReconnect() {
+            if (reconnectTimer) return;
+            reconnectAttempt += 1;
+            reconnectTimer = setTimeout(() => {
+                reconnectTimer = null;
+                connect();
+            }, WS_RECONNECT_MS);
+        }
+
+        connect();
+
+        // Click blank map to clear previous history overlay
+        map.on('click', () => {
+            clearHistoryOverlay();
+        });
+
+        // Popup button handler (event delegation; works even when popup content updates)
+        document.addEventListener('click', (e) => {
+            const btn = e.target && e.target.closest ? e.target.closest('button[data-action="play_sound"]') : null;
+            if (!btn) return;
+            const dogId = btn.getAttribute('data-dog-id');
+            if (!dogId) return;
+            if (!ws || ws.readyState !== 1) return;
+
+            btn.setAttribute('disabled', 'disabled');
+            // Optimistic UI: blue blink immediately for 5 seconds
+            sounding.set(dogId, Date.now() + 5000);
+            const d = dogData.get(dogId) || { id: dogId, battery: 100, speed: 0, sound: true };
+            d.sound = true;
+            dogData.set(dogId, d);
+            const m = markers.get(dogId);
+            if (m) {
+                if (!patchDogMarkerDom(m, d)) {
+                    m.setIcon(dogDivIcon(d));
+                    patchDogMarkerDom(m, d);
+                }
+            }
+            refreshActivePopup();
+
+            ws.send(JSON.stringify({ action: 'play_sound', dog_id: dogId }));
+        });
     </script>
 </body>
 </html>
